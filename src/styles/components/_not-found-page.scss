@@ -1,0 +1,18 @@
+.not-found-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.not-found-page__img {
+  margin-bottom: 40px;
+}
+
+.not-found-page__title {
+  font-size: $l-size;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: $brown;
+}

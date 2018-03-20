@@ -1,0 +1,33 @@
+.todolist {
+  flex-grow: 1;
+  min-height: calc(100vh - 17rem);
+  padding: 20px;
+  background-color: rgba(255, 177, 53, 0.3);
+  border-radius: 6px;
+}
+
+.todolist__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+  padding: 10px;
+  margin-bottom: 5px;
+  color: $tundora;
+  background-color: lighten($orange, 10%);
+  border-radius: 6px;
+}
+
+.todolist__item-name {
+  width: 100%;
+  flex-grow: 1;
+  padding: 5px;
+  line-height: 1.2;
+  color: lighten($tundora, 10%);
+  text-transform: uppercase;
+}
+
+.todolist__edit {
+  padding: 1px 6px;
+  align-items: center;
+}

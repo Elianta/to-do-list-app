@@ -1,0 +1,6 @@
+.page-content {
+  height: 100vh;
+  background-color: lighten($off-white, 13%);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,.3) 1px, rgba(255,255,255,.3) 21px),
+  repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255,255,255,.3) 1px, rgba(255,255,255,.3) 21px);
+}

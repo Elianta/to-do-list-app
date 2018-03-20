@@ -1,0 +1,55 @@
+.button {
+  width: 70px;
+  color: white;
+  background-color: lighten($light-blue, 20%);
+  border: none;
+  border-radius: 3px;
+
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    background-color: lighten($light-blue, 30%);
+  }
+  &:disabled {
+    background-color: lighten($light-blue, 45%);
+    &:hover {
+      & > svg {
+        fill: white;
+      }
+    }
+  }
+
+  &--manage {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+
+    & > svg {
+      fill: white;
+    }
+
+    &:hover {
+      & > svg {
+        fill: lighten($orange, 10%);
+      }
+    }
+  }
+
+  &--transfer {
+    width: 50px;
+  }
+
+  &--transfer-approved {
+    width: 50px;
+    background-color: $green;
+    &:hover {
+      cursor: default;
+      background-color: $green;
+      & > svg {
+        fill: white;
+      }
+    }
+  }
+}

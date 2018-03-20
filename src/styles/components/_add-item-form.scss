@@ -1,0 +1,30 @@
+.add-item-form {
+  display: flex;
+  width: 33rem;
+  height: 35px;
+  margin: 0 0 20px;
+  padding: 0;
+  background-color: lighten($off-white, 10%);
+  font-size: $m-size;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.add-item-form__input {
+  width: 100%;
+  height: 100%;
+  padding: 3px 10px;
+  background-color: lighten($off-white, 10%);
+  border: 0;
+  color: $light-blue;
+  font-size: inherit;
+
+  &::placeholder {
+    font-size: inherit;
+    font-style: italic;
+    color: lighten($light-blue, 30%);
+  }
+  &:focus {
+    outline: none;
+  }
+}

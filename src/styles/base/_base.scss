@@ -1,0 +1,33 @@
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, small, img, ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+}
+
+input, textarea, keygen, select, button {
+  font-family: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  font-size: 62.5%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: $m-size;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
