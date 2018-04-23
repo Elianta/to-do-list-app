@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import getVisibleTasks from '../selectors/tasks';
+import {toggleTask} from '../actions/categories';
 import AddNewToDoItem from './AddNewToDoItem.js';
 import ToDoItems from './ToDoItems.js';
 
@@ -11,11 +14,16 @@ const ToDoItemsSection = (props) => {
                 return findCategoryTasks(category.children, categoryID);
             }
             return prev;
-        }, [])
+        }, []);
+    }
+
+    function handleTaskDone(taskID, categoryID) {
+        props.dispatch(toggleTask(taskID, categoryID));
     }
 
     const categoryID = parseInt(props.match.params.id, 10);
-    const tasks = findCategoryTasks(props.categories, categoryID);
+    const toDoItems = findCategoryTasks(props.categories, categoryID);
+    const toDoItemsFiltered = getVisibleTasks(toDoItems, props.filters);
 
     return (
         <section className="todolist">
@@ -24,13 +32,17 @@ const ToDoItemsSection = (props) => {
                 categoryID={categoryID}
             />
             <ToDoItems
-                toDoItems={tasks}
+                toDoItems={toDoItemsFiltered}
                 categoryID={categoryID}
-                handleTaskDone={props.handleTaskDone}
-                filters={props.location.search}
+                handleTaskDone={handleTaskDone}
             />
         </section>
     );
 };
 
-export default ToDoItemsSection;
+const mapStateToProps = (state) => ({
+    categories: state.categories,
+    filters: state.filters
+});
+
+export default connect(mapStateToProps)(ToDoItemsSection);

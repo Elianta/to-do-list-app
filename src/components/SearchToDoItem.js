@@ -1,42 +1,32 @@
-import React from "react";
+import React from 'react';
+import {connect} from 'react-redux';
+import {setTextFilter} from '../actions/filters';
 
-export default class SearchToDoItem extends React.Component {
+class SearchToDoItem extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             search: ''
-        }
+        };
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        const prevSearchQuery = this.props.location.search;
-        const regExpShowDone = /[?]showdone=([^&]*)/;
-        if (prevSearchQuery) {
-            const optionIsPresent = regExpShowDone.test(prevSearchQuery);
-            if (optionIsPresent) {
-                const showDoneValue = prevSearchQuery.match(regExpShowDone)[1];
-                this.props.history.push(`?showdone=${showDoneValue}&task=${this.state.search}`);
-            } else {
-                this.props.history.push(`?task=${this.state.search}`);
-            }
+        this.props.history.replace({
+            pathname: this.props.location.pathname,
+            search: `?showdone=${this.props.filters.showDone}&text=${this.state.search}`,
+        });
 
-        } else {
-            this.props.history.push(`?task=${this.state.search}`);
-        }
-
-        this.setState(() => ({
-            search: ''
-        }))
+        this.props.dispatch(setTextFilter(this.state.search));
     }
 
     handleChange(event) {
         let value = event.target.value;
         this.setState(() => ({
             search: value
-        }))
+        }));
     }
 
     render() {
@@ -54,6 +44,12 @@ export default class SearchToDoItem extends React.Component {
                     <button className="search-bar__btn-search" type="submit">Search</button>
                 </div>
             </form>
-        )
+        );
     }
 }
+
+const mapStateToProps = (state) => ({
+    filters: state.filters
+});
+
+export default connect(mapStateToProps)(SearchToDoItem);

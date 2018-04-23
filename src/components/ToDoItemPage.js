@@ -1,6 +1,8 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Categories from './Categories.js';
 import {Link} from 'react-router-dom';
+import {saveEditedTaskWithoutTransfer, saveEditedTaskWithTransfer} from '../actions/categories';
 
 class ToDoItemPage extends React.Component {
     constructor(props) {
@@ -9,6 +11,7 @@ class ToDoItemPage extends React.Component {
         this.taskID = parseInt(props.match.params.taskID, 10);
         this.task = this.findTaskByIds(props.categories, this.categoryID, this.taskID)[0];
         this.state = {
+            taskID: this.taskID,
             isDone: this.task.isDone,
             taskName: this.task.name,
             taskDescription: this.task.description,
@@ -29,28 +32,33 @@ class ToDoItemPage extends React.Component {
     }
 
     handleSubmit() {
-        const taskData = {};
-        taskData.isDone = this.state.isDone;
-        taskData.taskName = this.state.taskName;
-        taskData.taskDescription = this.state.taskDescription;
-        this.props.handleSaveToDoItem(taskData, this.categoryID, this.taskID, this.state.categoryToMove);
+        let {isDone, taskName, taskDescription, taskID} = this.state;
+        const taskData = {isDone, taskName, taskDescription, taskID};
+        if (this.categoryID === this.state.categoryToMove) {
+            this.props.dispatch(saveEditedTaskWithoutTransfer(taskData, this.categoryID));
+        } else {
+            this.props.dispatch(saveEditedTaskWithTransfer(taskData, this.categoryID, this.state.categoryToMove));
+        }
     }
 
     handleSpecifyCategoryToMove(categoryID) {
         this.setState(() => ({
             categoryToMove: categoryID
-        }))
+        }));
     }
 
     findTaskByIds(categories, categoryID, taskID) {
         return categories.reduce((prev, category) => {
             if (category.id === categoryID) {
-                return prev.concat(category.tasks[taskID])
+                let result = category.tasks.filter((task) => {
+                    return task.id === task.id;
+                });
+                return prev.concat(result);
             } else if (category.children.length && !prev.length) {
                 return this.findTaskByIds(category.children, categoryID, taskID);
             }
             return prev;
-        }, [])
+        }, []);
     }
 
     render() {
@@ -65,7 +73,7 @@ class ToDoItemPage extends React.Component {
                     <div className="container  container--horizontal">
                         <section className="categories">
                             <Categories
-                                categories={this.props.categories}
+                                active={this.props.match.params.categoryID}
                                 mode="taskTransfer"
                                 categoryID={this.categoryID}
                                 handleSpecifyCategoryToMove={this.handleSpecifyCategoryToMove}
@@ -78,8 +86,10 @@ class ToDoItemPage extends React.Component {
                                     to={`/category/${this.categoryID}`}
                                     onClick={this.handleSubmit}
                                 >Save Changes</Link>
-                                <Link className="button  todoitem__btn"
-                                      to={`/category/${this.categoryID}`}>Cancel</Link>
+                                <Link
+                                    className="button  todoitem__btn"
+                                    to={`/category/${this.categoryID}`}
+                                >Cancel</Link>
                             </div>
                             <input
                                 className="todoitem__title"
@@ -119,4 +129,8 @@ class ToDoItemPage extends React.Component {
     }
 }
 
-export default ToDoItemPage;
+const mapStateToProps = (state) => ({
+    categories: state.categories
+});
+
+export default connect(mapStateToProps)(ToDoItemPage);

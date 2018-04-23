@@ -1,39 +1,27 @@
-import React from "react";
-import {withRouter} from 'react-router-dom';
+import React from 'react';
+import {connect} from 'react-redux';
+import {setShowDoneFilter} from '../actions/filters';
 
 class ShowDone extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.filterTask = this.filterTask.bind(this);
     }
 
     handleChange(e) {
         const showDoneChecked = e.target.checked;
-        let prevSearchQuery = this.props.location.search;
-        const regExpTaskSearch = /task=([^&]*)/;
-
-        if (prevSearchQuery) {
-            const taskSearchIsPresent = regExpTaskSearch.test(prevSearchQuery);
-            if (taskSearchIsPresent) {
-                const taskSearchValue = prevSearchQuery.match(regExpTaskSearch)[1];
-                this.props.history.push(`?showdone=${showDoneChecked}&task=${taskSearchValue}`);
-            } else {
-                this.props.history.push(`?showdone=${showDoneChecked}`);
-            }
+        this.props.dispatch(setShowDoneFilter(showDoneChecked));
+        if (this.props.filters.text) {
+            this.props.history.replace({
+                pathname: this.props.location.pathname,
+                search: `?showdone=${showDoneChecked}&text=${this.props.filters.text}`,
+            });
         } else {
-            this.props.history.push(`?showdone=${showDoneChecked}`);
+            this.props.history.replace({
+                pathname: this.props.location.pathname,
+                search: `?showdone=${showDoneChecked}`,
+            });
         }
-    }
-
-    filterTask() {
-        const filtersString = this.props.location.search;
-        let showDoneFilter;
-        const regExp = /showdone=([^&]*)/;
-        if (filtersString.length && regExp.test(filtersString)) {
-            showDoneFilter = filtersString.match(/showdone=([^&]*)/)[1] !== 'false';
-        }
-        return showDoneFilter || false;
     }
 
     render() {
@@ -43,13 +31,17 @@ class ShowDone extends React.Component {
                     type="checkbox"
                     className="option__input"
                     id="show-done"
-                    checked={this.filterTask()}
+                    checked={this.props.filters.showDone}
                     onChange={this.handleChange}
                 />
                 <label className="option__label" htmlFor="show-done">Show done</label>
             </div>
-        )
+        );
     }
 }
 
-export default withRouter(ShowDone);
+const mapStateToProps = (state) => ({
+    filters: state.filters
+});
+
+export default connect(mapStateToProps)(ShowDone);
