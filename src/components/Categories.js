@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Category from './Category.js';
 
 class Categories extends React.Component {
@@ -21,15 +22,12 @@ class Categories extends React.Component {
         let categories = this.props.categories.map((category) => {
             return (
                 <Category
+                    active={this.props.active}
                     node={category}
                     children={category.children}
-                    handleAddNestedCategory={this.props.handleAddNestedCategory}
                     key={category.name}
-                    handleEditCategory={this.props.handleEditCategory}
-                    handleDeleteCategory={this.props.handleDeleteCategory}
                     mode={this.props.mode}
-                    updateProgressBar={this.props.updateProgressBar}
-                    categoryID={this.props.categoryID}
+                    categoryID={category.id}
                     handleSpecifyCategoryToMove={this.handleSpecifyCategoryToMove}
                     categoryToMoveTaskInId={this.state.categoryToMoveTaskInId}
                     transferTaskIn={this.state.categoryToMoveTaskInId === category.id}
@@ -47,4 +45,8 @@ class Categories extends React.Component {
     }
 }
 
-export default Categories;
+const mapStateToProps = (state) => ({
+    categories: state.categories
+});
+
+export default connect(mapStateToProps)(Categories);

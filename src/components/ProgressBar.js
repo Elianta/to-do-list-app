@@ -1,21 +1,45 @@
-import React from "react";
+import React from 'react';
+import {connect} from 'react-redux';
 
-export default class ProgressBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.categoryID = parseInt(this.props.location.pathname.split('/')[2], 10);
-  }
+const ProgressBar = ({categories, selectedCategory}) => {
 
-  componentDidMount() {
-      this.props.updateProgressBar(this.categoryID);
-  }
+    function calculateProgressPercent(categories, categoryID) {
+        return categories.reduce(function (prev, category) {
+            if (category.id === categoryID) {
+                const tasksNumber = category.tasks.length;
+                const standardPercent = 100;
+                const tasksDone = category.tasks.reduce((prev, task) => {
+                    if (task.isDone) {
+                        return prev + 1;
+                    }
+                    return prev;
+                }, 0);
+                const progressPercent = tasksDone / tasksNumber * 100;
+                if (tasksNumber) {
+                    return prev.concat(progressPercent);
+                } else {
+                    return prev.concat(standardPercent);
+                }
 
-  render() {
+            } else if (category.children.length && !prev.length) {
+                return calculateProgressPercent(category.children, categoryID);
+            }
+            return prev;
+        }, '');
+    }
+
+    const progressPercent = calculateProgressPercent(categories, +selectedCategory);
+
     return (
-      <div className="progress-bar">
-        <div className="progress-bar__line" style={{width: `${this.props.taskDonePercent}%`}}>
+        <div className="progress-bar">
+            <div className="progress-bar__line" style={{width: `${progressPercent}%`}}>
+            </div>
         </div>
-      </div>
-    )
-  }
-}
+    );
+};
+
+const mapStateToProps = (state) => ({
+    categories: state.categories,
+});
+
+export default connect(mapStateToProps)(ProgressBar);

@@ -4,20 +4,11 @@ import {Link} from 'react-router-dom';
 class ToDoItem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isDone: this.props.isDone,
-        };
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        this.setState({
-            [name]: value
-        });
-        this.props.handleTaskDone(this.props.categoryID, this.props.index, value);
+    handleChange() {
+        this.props.handleTaskDone(this.props.id, this.props.categoryID);
     }
 
     render() {
@@ -27,16 +18,16 @@ class ToDoItem extends React.Component {
                     <input
                         type="checkbox"
                         className="option__input"
-                        id={`item${this.props.index}`}
+                        id={`${this.props.id}`}
                         name="isDone"
-                        checked={this.state.isDone}
+                        checked={this.props.isDone}
                         onChange={this.handleChange}
                     />
-                    <label className="option__label" htmlFor={`item${this.props.index}`}>Done</label>
+                    <label className="option__label" htmlFor={`${this.props.id}`}>Done</label>
                 </div>
                 <span className="todolist__item-name">{this.props.toDoItemText}</span>
                 <Link
-                    to={`/category/${this.props.categoryID}/task/${this.props.index}`}
+                    to={`/category/${this.props.categoryID}/task/${this.props.id}`}
                     className="button  button--manage  todolist__edit"
                 >
                     <svg width="20" height="20" viewBox="0 0 528.899 528.899">
