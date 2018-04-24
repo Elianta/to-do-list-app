@@ -1,6 +1,6 @@
 # TODO List App
 <p>Simple app for adding categories with tasks inside.</p>
-<p>Created using React JS 16+ and React Roter 4.</p>
+<p>Created using React JS 16+, React Roter v.4, Redux.</p>
 
 ## Features:
 * Add/Delete/Rename categories
