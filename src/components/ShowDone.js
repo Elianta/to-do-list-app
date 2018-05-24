@@ -1,25 +1,30 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {setShowDoneFilter} from '../actions/filters';
+import {bindActionCreators} from 'redux';
 
-class ShowDone extends React.Component {
+export class ShowDone extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(e) {
-        const showDoneChecked = e.target.checked;
-        this.props.dispatch(setShowDoneFilter(showDoneChecked));
+        const showDone = e.target.checked;
+        this.props.setShowDoneFilter(showDone);
+        this.changeBrowserHistory(showDone);
+    }
+
+    changeBrowserHistory(showDone) {
         if (this.props.filters.text) {
             this.props.history.replace({
                 pathname: this.props.location.pathname,
-                search: `?showdone=${showDoneChecked}&text=${this.props.filters.text}`,
+                search: `?showdone=${showDone}&text=${this.props.filters.text}`,
             });
         } else {
             this.props.history.replace({
                 pathname: this.props.location.pathname,
-                search: `?showdone=${showDoneChecked}`,
+                search: `?showdone=${showDone}`,
             });
         }
     }
@@ -28,6 +33,7 @@ class ShowDone extends React.Component {
         return (
             <div className="option">
                 <input
+                    data-testid="show-done"
                     type="checkbox"
                     className="option__input"
                     id="show-done"
@@ -44,4 +50,10 @@ const mapStateToProps = (state) => ({
     filters: state.filters
 });
 
-export default connect(mapStateToProps)(ShowDone);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        setShowDoneFilter
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShowDone);

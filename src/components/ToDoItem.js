@@ -16,6 +16,7 @@ class ToDoItem extends React.Component {
             <div className="todolist__item">
                 <div className="option  option--empty">
                     <input
+                        data-testid="is-done"
                         type="checkbox"
                         className="option__input"
                         id={`${this.props.id}`}

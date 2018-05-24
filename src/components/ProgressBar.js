@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-const ProgressBar = ({categories, selectedCategory}) => {
+export const ProgressBar = ({categories, selectedCategory}) => {
 
     function calculateProgressPercent(categories, categoryID) {
         return categories.reduce(function (prev, category) {

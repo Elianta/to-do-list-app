@@ -1,35 +1,58 @@
 import React from 'react';
+import {addTask} from '../actions/categories';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
-export default class AddNewToDoItem extends React.Component {
+export class AddNewToDoItem extends React.Component {
     constructor(props) {
         super(props);
         this.handleAddNewToDoItem = this.handleAddNewToDoItem.bind(this);
         this.state = {
-            error: undefined
+            error: undefined,
+            name: ''
         };
     }
 
     handleAddNewToDoItem(e) {
         e.preventDefault();
-        const toDoItem = e.target.elements.toDoItem.value.trim();
-        const error = this.props.handleAddNewToDoItem(this.props.categoryID, toDoItem);
-
-        this.setState(() => ({error}));
-
-        if (!error) {
-            e.target.elements.toDoItem.value = '';
+        const toDoName = this.state.name;
+        if (!toDoName) {
+            this.setState(() => ({error: 'Enter valid value to add item'}));
+        } else {
+            this.setState(() => ({
+                error: '',
+                name: ''
+            }));
+            this.props.addTask({name: toDoName, categoryID: this.props.categoryID});
         }
     }
 
     render() {
         return (
             <div>
-                {this.state.error && <p>{this.state.error}</p>}
-                <form className="add-item-form" onSubmit={this.handleAddNewToDoItem}>
-                    <input className="add-item-form__input" type="text" name="toDoItem" placeholder="Enter item title"/>
+                {this.state.error && <p data-testid="error">{this.state.error}</p>}
+                <form data-testid="form" className="add-item-form" onSubmit={this.handleAddNewToDoItem}>
+                    <input
+                        data-testid="name"
+                        className="add-item-form__input"
+                        type="text" name="toDoItem"
+                        placeholder="Enter item title"
+                        value={this.state.name}
+                        onChange={(e) => {
+                            this.setState({name: e.currentTarget.value.trim()});
+                        }}
+                    />
                     <button className="button">Add</button>
                 </form>
             </div>
         );
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        addTask
+    }, dispatch);
+};
+
+export default connect(null, mapDispatchToProps)(AddNewToDoItem);

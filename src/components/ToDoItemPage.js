@@ -1,20 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import Categories from './Categories.js';
 import {Link} from 'react-router-dom';
 import {saveEditedTaskWithoutTransfer, saveEditedTaskWithTransfer} from '../actions/categories';
 
-class ToDoItemPage extends React.Component {
+export class ToDoItemPage extends React.Component {
     constructor(props) {
         super(props);
         this.categoryID = parseInt(props.match.params.categoryID, 10);
         this.taskID = parseInt(props.match.params.taskID, 10);
-        this.task = this.findTaskByIds(props.categories, this.categoryID, this.taskID)[0];
+        this.task = this.__findTaskByIds(props.categories, this.categoryID, this.taskID)[0];
         this.state = {
-            taskID: this.taskID,
             isDone: this.task.isDone,
-            taskName: this.task.name,
-            taskDescription: this.task.description,
+            name: this.task.name,
+            description: this.task.description,
             categoryToMove: this.categoryID
         };
         this.handleChange = this.handleChange.bind(this);
@@ -32,12 +32,13 @@ class ToDoItemPage extends React.Component {
     }
 
     handleSubmit() {
-        let {isDone, taskName, taskDescription, taskID} = this.state;
-        const taskData = {isDone, taskName, taskDescription, taskID};
+        let {isDone, name, description} = this.state;
+        const id = this.taskID;
+        const taskData = {isDone, name, description, id};
         if (this.categoryID === this.state.categoryToMove) {
-            this.props.dispatch(saveEditedTaskWithoutTransfer(taskData, this.categoryID));
+            this.props.saveEditedTaskWithoutTransfer(taskData, this.categoryID);
         } else {
-            this.props.dispatch(saveEditedTaskWithTransfer(taskData, this.categoryID, this.state.categoryToMove));
+            this.props.saveEditedTaskWithTransfer(taskData, this.categoryID, this.state.categoryToMove);
         }
     }
 
@@ -47,15 +48,15 @@ class ToDoItemPage extends React.Component {
         }));
     }
 
-    findTaskByIds(categories, categoryID, taskID) {
+    __findTaskByIds(categories, categoryID, taskID) {
         return categories.reduce((prev, category) => {
             if (category.id === categoryID) {
                 let result = category.tasks.filter((task) => {
-                    return task.id === task.id;
+                    return task.id === taskID;
                 });
                 return prev.concat(result);
             } else if (category.children.length && !prev.length) {
-                return this.findTaskByIds(category.children, categoryID, taskID);
+                return this.__findTaskByIds(category.children, categoryID, taskID);
             }
             return prev;
         }, []);
@@ -66,7 +67,7 @@ class ToDoItemPage extends React.Component {
             <div className="page-content">
                 <header className="header">
                     <div className="container  container--horizontal">
-                        <h1 className="header__title">To-Do Item #1</h1>
+                        <h1 className="header__title">{this.state.name}</h1>
                     </div>
                 </header>
                 <main>
@@ -82,25 +83,29 @@ class ToDoItemPage extends React.Component {
                         <form className="todoitem">
                             <div className="todoitem__manage">
                                 <Link
+                                    data-testid="submit-btn"
                                     className="button  todoitem__btn"
                                     to={`/category/${this.categoryID}`}
                                     onClick={this.handleSubmit}
                                 >Save Changes</Link>
                                 <Link
+                                    data-testid="cancel-btn"
                                     className="button  todoitem__btn"
                                     to={`/category/${this.categoryID}`}
                                 >Cancel</Link>
                             </div>
                             <input
+                                data-testid="name"
                                 className="todoitem__title"
                                 type="text"
-                                name="taskName"
-                                value={this.state.taskName}
+                                name="name"
+                                value={this.state.name}
                                 autoFocus={true}
                                 onChange={this.handleChange}
                             />
                             <div className="option">
                                 <input
+                                    data-testid="is-done"
                                     className="option__input"
                                     type="checkbox"
                                     id="taskDone"
@@ -113,11 +118,12 @@ class ToDoItemPage extends React.Component {
 
                             <label className="todoitem__description-label" htmlFor="description">Description:</label>
                             <textarea
+                                data-testid="description"
                                 className="todoitem__description"
                                 placeholder="Write something..."
                                 id="description"
-                                name="taskDescription"
-                                value={this.state.taskDescription}
+                                name="description"
+                                value={this.state.description}
                                 onChange={this.handleChange}
                             />
 
@@ -133,4 +139,11 @@ const mapStateToProps = (state) => ({
     categories: state.categories
 });
 
-export default connect(mapStateToProps)(ToDoItemPage);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        saveEditedTaskWithoutTransfer,
+        saveEditedTaskWithTransfer
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToDoItemPage);

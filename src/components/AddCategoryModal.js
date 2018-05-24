@@ -1,20 +1,24 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import Modal from 'react-modal';
 import {closeModals} from '../actions/modals';
 import {addNestedCategory} from '../actions/categories';
 
-class AddCategoryModal extends React.Component {
+export class AddCategoryModal extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            category: ''
+        };
         this.handleSaveNewCategory = this.handleSaveNewCategory.bind(this);
     }
 
     handleSaveNewCategory(e) {
         e.preventDefault();
-        const categoryName = e.target.elements.category.value.trim();
-        this.props.dispatch(addNestedCategory(categoryName, this.props.modals.editableCategory.id));
-        this.props.dispatch(closeModals());
+        const categoryName = this.state.category;
+        this.props.addNestedCategory({name: categoryName, parentID: this.props.modals.editableCategory.id});
+        this.props.closeModals();
     }
 
     render() {
@@ -27,12 +31,16 @@ class AddCategoryModal extends React.Component {
                 className="modal"
             >
                 <h3 className="modal__title">{`Add nested category into '${this.props.modals.editableCategory.name}'`}</h3>
-                <form className="modal__form" onSubmit={this.handleSaveNewCategory}>
+                <form data-testid="form" className="modal__form" onSubmit={this.handleSaveNewCategory}>
                     <input
                         type="text"
                         name="category"
                         autoFocus={true}
                         className="modal__input"
+                        data-testid="name"
+                        onChange={(e) => {
+                            this.setState({category: e.currentTarget.value.trim()});
+                        }}
                     />
                     <button className="button  modal__btn">Save</button>
                 </form>
@@ -45,4 +53,11 @@ const mapStateToProps = (state) => ({
     modals: state.modals
 });
 
-export default connect(mapStateToProps)(AddCategoryModal);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        addNestedCategory,
+        closeModals
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddCategoryModal);

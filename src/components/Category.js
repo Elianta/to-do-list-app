@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {NavLink} from 'react-router-dom';
 import {
     openModalForCategoryAddition,
@@ -7,7 +8,7 @@ import {
     openModalForCategoryEditing
 } from '../actions/modals';
 
-class Category extends React.Component {
+export class Category extends React.Component {
     constructor(props) {
         super(props);
         this.handleOpenAddCategoryModal = this.handleOpenAddCategoryModal.bind(this);
@@ -16,15 +17,15 @@ class Category extends React.Component {
     }
 
     handleOpenAddCategoryModal(id, name) {
-        this.props.dispatch(openModalForCategoryAddition(id, name));
+        this.props.openModalForCategoryAddition({id, name});
     }
 
     handleOpenEditCategoryModal(id, name) {
-        this.props.dispatch(openModalForCategoryEditing(id, name));
+        this.props.openModalForCategoryEditing({id, name});
     }
 
     handleOpenDeleteCategoryModal(id, name) {
-        this.props.dispatch(openModalForCategoryDeleting(id, name));
+        this.props.openModalForCategoryDeleting({id, name});
     }
 
     render() {
@@ -44,6 +45,9 @@ class Category extends React.Component {
                         categoryID={this.props.categoryID}
                         handleSpecifyCategoryToMove={this.props.handleSpecifyCategoryToMove}
                         transferTaskIn={this.props.categoryToMoveTaskInId === childCategory.id}
+                        openModalForCategoryAddition={this.props.openModalForCategoryAddition}
+                        openModalForCategoryEditing={this.props.openModalForCategoryEditing}
+                        openModalForCategoryDeleting={this.props.openModalForCategoryDeleting}
                     />
                 );
             });
@@ -56,6 +60,7 @@ class Category extends React.Component {
                         <span className="categories__text">{this.props.node.name}</span>
                         <div className="categories__manage-list">
                             <button
+                                data-testid="transfer-btn"
                                 className={
                                     this.props.transferTaskIn ? 'button  button--manage  button--transfer-approved' : 'button  button--manage  button--transfer'
                                 }
@@ -90,6 +95,7 @@ class Category extends React.Component {
                         <div className="categories__manage-list">
                             <button
                                 className="button  button--manage  categories__manage-item"
+                                data-testid="edit-btn"
                                 onClick={() => {
                                     this.handleOpenEditCategoryModal(this.props.node.id, this.props.node.name);
                                 }}
@@ -103,6 +109,7 @@ class Category extends React.Component {
                             </button>
                             <button
                                 className="button  button--manage  categories__manage-item"
+                                data-testid="delete-btn"
                                 onClick={() => {
                                     this.handleOpenDeleteCategoryModal(this.props.node.id, this.props.node.name);
                                 }}
@@ -120,6 +127,7 @@ class Category extends React.Component {
                             </button>
                             <button
                                 className="button  button--manage"
+                                data-testid="add-btn"
                                 onClick={() => {
                                     this.handleOpenAddCategoryModal(this.props.node.id, this.props.node.name);
                                 }}
@@ -149,4 +157,12 @@ const mapStateToProps = (state) => ({
     categories: state.categories
 });
 
-export default connect(mapStateToProps)(Category);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        openModalForCategoryAddition,
+        openModalForCategoryDeleting,
+        openModalForCategoryEditing
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);

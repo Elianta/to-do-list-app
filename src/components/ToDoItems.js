@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import ToDoItem from './ToDoItem.js';
 
-const ToDoItems = (props) => (
+export const ToDoItems = (props) => (
     <div>
         {
             props.toDoItems.map((toDoItem) => (

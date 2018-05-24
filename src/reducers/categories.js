@@ -9,26 +9,7 @@ import {
     SAVE_EDITED_TASK_WITHOUT_TRANSFER
 } from '../variables/actions';
 
-const defaultState = [
-    {
-        id: 1,
-        name: 'Category 1',
-        children: [
-            {id: 2, name: 'Category 1-1', children: [], tasks: []},
-            {id: 3, name: 'Category 1-2', children: [], tasks: []}
-        ],
-        tasks: [
-            {name: 'Task 1', description: 'Task 1 Text', isDone: false, id: 10},
-            {name: 'Task 2', description: 'Task 2 Text', isDone: true, id: 11},
-            {name: 'Task 3', description: 'Task 3 Text', isDone: true, id: 12}
-        ]
-    },
-    {
-        id: 4, name: 'Category 2', children: [], tasks: []
-    }
-];
-
-const categoriesReducer = (state = defaultState, action) => {
+const categoriesReducer = (state = [], action) => {
     switch (action.type) {
         case ADD_CATEGORY:
             return [
@@ -42,7 +23,7 @@ const categoriesReducer = (state = defaultState, action) => {
         case REMOVE_CATEGORY:
             return deleteCategory(state, action.id);
         case ADD_TASK:
-            return addTaskToCategory(state, action.categoryID, action.task);
+            return addTaskToCategories(state, action.categoryID, action.task);
         case TOGGLE_TASK:
             return toggleTask(state, action.taskID, action.categoryID);
         case SAVE_EDITED_TASK_WITHOUT_TRANSFER:
@@ -90,12 +71,12 @@ function editCategory(categories, id, text) {
     });
 }
 
-function addTaskToCategory(categories, categoryID, task) {
+function addTaskToCategories(categories, categoryID, task) {
     return categories.map((category) => {
         if (category.id === categoryID) {
             category.tasks.unshift(task);
         } else if (category.children.length) {
-            addTaskToCategory(category.children, categoryID, task);
+            addTaskToCategories(category.children, categoryID, task);
         }
         return category;
     });
@@ -120,9 +101,9 @@ function saveTaskWithoutTransfer(categories, categoryID, task) {
     return categories.map((category) => {
         if (category.id === categoryID) {
             category.tasks.forEach((item) => {
-                if (item.id === task.taskID) {
-                    item.name = task.taskName;
-                    item.description = task.taskDescription;
+                if (item.id === task.id) {
+                    item.name = task.name;
+                    item.description = task.description;
                     item.isDone = task.isDone;
                 }
             });
@@ -136,18 +117,13 @@ function saveTaskWithoutTransfer(categories, categoryID, task) {
 function saveTaskWithTransfer(categories, categoryID, task, destinationID) {
     return categories.map((category) => {
         if (category.id === categoryID) {
-            deleteTaskFromCategory(task.id, category);
+            category.tasks = category.tasks.filter((item) => item.id !== task.id);
         } else if (category.id === destinationID) {
-            addTaskToCategory(categories, destinationID, task);
-        } else if (category.children.length) {
+            category.tasks.unshift(task);
+        }
+        if (category.children.length) {
             saveTaskWithTransfer(category.children, categoryID, task, destinationID);
         }
         return category;
-    });
-}
-
-function deleteTaskFromCategory(taskID, category) {
-    return category.tasks.filter((task) => {
-        return task.id !== taskID;
     });
 }

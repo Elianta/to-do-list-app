@@ -5,19 +5,19 @@ import {
     CLOSE_MODALS
 } from '../variables/actions';
 
-export const openModalForCategoryAddition = (id, name) => ({
+export const openModalForCategoryAddition = ({id, name}) => ({
     type: OPEN_MODAL_FOR_CATEGORY_ADDITION,
     id,
     name
 });
 
-export const openModalForCategoryEditing = (id, name) => ({
+export const openModalForCategoryEditing = ({id, name}) => ({
     type: OPEN_MODAL_FOR_CATEGORY_EDITING,
     id,
     name
 });
 
-export const openModalForCategoryDeleting = (id, name) => ({
+export const openModalForCategoryDeleting = ({id, name}) => ({
     type: OPEN_MODAL_FOR_CATEGORY_DELETING,
     id,
     name

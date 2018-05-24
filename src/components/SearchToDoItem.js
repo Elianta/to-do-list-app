@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {setTextFilter} from '../actions/filters';
+import {bindActionCreators} from 'redux';
 
-class SearchToDoItem extends React.Component {
+export class SearchToDoItem extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -14,12 +15,8 @@ class SearchToDoItem extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.history.replace({
-            pathname: this.props.location.pathname,
-            search: `?showdone=${this.props.filters.showDone}&text=${this.state.search}`,
-        });
-
-        this.props.dispatch(setTextFilter(this.state.search));
+        this.changeBrowserHistory();
+        this.props.setTextFilter(this.state.search);
     }
 
     handleChange(event) {
@@ -29,10 +26,18 @@ class SearchToDoItem extends React.Component {
         }));
     }
 
+    changeBrowserHistory() {
+        this.props.history.replace({
+            pathname: this.props.location.pathname,
+            search: `?showdone=${this.props.filters.showDone}&text=${this.state.search}`,
+        });
+    }
+
     render() {
         return (
-            <form className="search-bar" onSubmit={this.handleSubmit}>
+            <form data-testid="form" className="search-bar" onSubmit={this.handleSubmit}>
                 <input
+                    data-testid="search"
                     type="text"
                     name="search"
                     className="search-bar__input"
@@ -52,4 +57,10 @@ const mapStateToProps = (state) => ({
     filters: state.filters
 });
 
-export default connect(mapStateToProps)(SearchToDoItem);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        setTextFilter
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchToDoItem);

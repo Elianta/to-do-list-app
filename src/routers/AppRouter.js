@@ -2,7 +2,6 @@ import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {setTextFilter,setShowDoneFilter} from '../actions/filters';
-import {addTask} from '../actions/categories';
 import {closeModals} from '../actions/modals';
 import HomePage from '../components/HomePage';
 import ToDoItemPage from '../components/ToDoItemPage';
@@ -11,16 +10,8 @@ import NotFoundPage from '../components/NotFoundPage';
 class AppRouter extends React.Component {
     constructor(props) {
         super(props);
-        this.handleAddNewToDoItem = this.handleAddNewToDoItem.bind(this);
         this.handleModalClose = this.handleModalClose.bind(this);
         this.checkSearchString = this.checkSearchString.bind(this);
-    }
-
-    handleAddNewToDoItem(categoryID, toDoItemName) {
-        if (!toDoItemName) {
-            return 'Enter valid value to add item';
-        }
-        this.props.dispatch(addTask(toDoItemName, categoryID));
     }
 
     handleModalClose() {
@@ -46,7 +37,6 @@ class AppRouter extends React.Component {
                         <HomePage
                             {...routeProps}
                             handleModalClose={this.handleModalClose}
-                            handleAddNewToDoItem={this.handleAddNewToDoItem}
                         />
                     )}/>
                     <Route path="/category/:id" exact={true} render={routeProps => {
@@ -55,7 +45,6 @@ class AppRouter extends React.Component {
                             <HomePage
                                 {...routeProps}
                                 handleModalClose={this.handleModalClose}
-                                handleAddNewToDoItem={this.handleAddNewToDoItem}
                             />
                         );
                     }}/>

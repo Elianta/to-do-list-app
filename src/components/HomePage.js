@@ -38,7 +38,6 @@ const HomePage = (props) => (
                     <Route path="/category/:id" exact={true} render={routeProps => (
                         <ToDoItemsSection
                             {...routeProps}
-                            handleAddNewToDoItem={props.handleAddNewToDoItem}
                         />
                     )}/>
                 </div>

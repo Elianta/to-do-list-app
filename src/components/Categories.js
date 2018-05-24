@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Category from './Category.js';
 
-class Categories extends React.Component {
+export class Categories extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
