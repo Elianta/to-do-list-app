@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render AddNewToDoItem correctly 1`] = `
+<div>
+  <form
+    className="add-item-form"
+    data-testid="form"
+    onSubmit={[Function]}
+  >
+    <input
+      className="add-item-form__input"
+      data-testid="name"
+      name="toDoItem"
+      onChange={[Function]}
+      placeholder="Enter item title"
+      type="text"
+      value=""
+    />
+    <button
+      className="button"
+    >
+      Add
+    </button>
+  </form>
+</div>
+`;

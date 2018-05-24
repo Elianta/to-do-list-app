@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render ToDoItemsSection correctly 1`] = `
+<section
+  className="todolist"
+>
+  <Connect(AddNewToDoItem)
+    categoryID={5}
+  />
+  <Connect(ToDoItems)
+    categoryID={5}
+    handleTaskDone={[Function]}
+    toDoItems={
+      Array [
+        Object {
+          "description": "Task 4 Text",
+          "id": 1,
+          "isDone": false,
+          "name": "Task 4",
+        },
+        Object {
+          "description": "Task 5 Text",
+          "id": 2,
+          "isDone": true,
+          "name": "Task 5",
+        },
+        Object {
+          "description": "Task 6 Text",
+          "id": 3,
+          "isDone": false,
+          "name": "Task 6",
+        },
+      ]
+    }
+  />
+</section>
+`;

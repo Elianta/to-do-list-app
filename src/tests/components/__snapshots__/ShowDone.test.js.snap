@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render ShowDone correctly 1`] = `
+<div
+  className="option"
+>
+  <input
+    checked={true}
+    className="option__input"
+    data-testid="show-done"
+    id="show-done"
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <label
+    className="option__label"
+    htmlFor="show-done"
+  >
+    Show done
+  </label>
+</div>
+`;

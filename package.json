@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --config=jest.config.json",
     "build": "webpack",
     "dev-server": "webpack-dev-server"
   },
@@ -17,8 +17,12 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.9",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.3",
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.7.0",
+    "jest": "^22.4.3",
     "node-sass": "^4.7.2",
     "react-router-dom": "^4.2.2",
     "sass-loader": "^6.0.6",

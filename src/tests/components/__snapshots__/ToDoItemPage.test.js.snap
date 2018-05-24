@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render ToDoItemPage correctly 1`] = `
+<div
+  className="page-content"
+>
+  <header
+    className="header"
+  >
+    <div
+      className="container  container--horizontal"
+    >
+      <h1
+        className="header__title"
+      >
+        Task 5
+      </h1>
+    </div>
+  </header>
+  <main>
+    <div
+      className="container  container--horizontal"
+    >
+      <section
+        className="categories"
+      >
+        <Connect(Categories)
+          active="5"
+          categoryID={5}
+          handleSpecifyCategoryToMove={[Function]}
+          mode="taskTransfer"
+        />
+      </section>
+      <form
+        className="todoitem"
+      >
+        <div
+          className="todoitem__manage"
+        >
+          <Link
+            className="button  todoitem__btn"
+            data-testid="submit-btn"
+            onClick={[Function]}
+            replace={false}
+            to="/category/5"
+          >
+            Save Changes
+          </Link>
+          <Link
+            className="button  todoitem__btn"
+            data-testid="cancel-btn"
+            replace={false}
+            to="/category/5"
+          >
+            Cancel
+          </Link>
+        </div>
+        <input
+          autoFocus={true}
+          className="todoitem__title"
+          data-testid="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value="Task 5"
+        />
+        <div
+          className="option"
+        >
+          <input
+            checked={true}
+            className="option__input"
+            data-testid="is-done"
+            id="taskDone"
+            name="isDone"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <label
+            className="option__label"
+            htmlFor="taskDone"
+          >
+            Done
+          </label>
+        </div>
+        <label
+          className="todoitem__description-label"
+          htmlFor="description"
+        >
+          Description:
+        </label>
+        <textarea
+          className="todoitem__description"
+          data-testid="description"
+          id="description"
+          name="description"
+          onChange={[Function]}
+          placeholder="Write something..."
+          value="Task 5 Text"
+        />
+      </form>
+    </div>
+  </main>
+</div>
+`;

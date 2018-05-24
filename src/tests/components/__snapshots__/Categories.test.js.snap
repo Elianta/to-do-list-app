@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render Categories correctly 1`] = `
+<div
+  className="categories__container"
+>
+  <ul
+    className="categories__list"
+  >
+    <Connect(Category)
+      active="12"
+      categoryID={1}
+      categoryToMoveTaskInId={null}
+      handleSpecifyCategoryToMove={[Function]}
+      key="Category 1"
+      mode="taskTransfer"
+      node={
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "id": 2,
+              "name": "Category 1-1",
+              "tasks": Array [],
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "id": 5,
+                  "name": "Category 1-2-1",
+                  "tasks": Array [
+                    Object {
+                      "description": "Task 4 Text",
+                      "id": 1,
+                      "isDone": false,
+                      "name": "Task 4",
+                    },
+                    Object {
+                      "description": "Task 5 Text",
+                      "id": 2,
+                      "isDone": true,
+                      "name": "Task 5",
+                    },
+                    Object {
+                      "description": "Task 6 Text",
+                      "id": 3,
+                      "isDone": false,
+                      "name": "Task 6",
+                    },
+                  ],
+                },
+              ],
+              "id": 3,
+              "name": "Category 1-2",
+              "tasks": Array [],
+            },
+          ],
+          "id": 1,
+          "name": "Category 1",
+          "tasks": Array [
+            Object {
+              "description": "Task 1 Text",
+              "id": 4,
+              "isDone": false,
+              "name": "Task 1",
+            },
+            Object {
+              "description": "Task 2 Text",
+              "id": 5,
+              "isDone": true,
+              "name": "Task 2",
+            },
+            Object {
+              "description": "Task 3 Text",
+              "id": 6,
+              "isDone": true,
+              "name": "Task 3",
+            },
+          ],
+        }
+      }
+      transferTaskIn={false}
+    />
+    <Connect(Category)
+      active="12"
+      categoryID={4}
+      categoryToMoveTaskInId={null}
+      handleSpecifyCategoryToMove={[Function]}
+      key="Category 2"
+      mode="taskTransfer"
+      node={
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "id": 6,
+              "name": "Category 2-1",
+              "tasks": Array [],
+            },
+          ],
+          "id": 4,
+          "name": "Category 2",
+          "tasks": Array [
+            Object {
+              "description": "Task 7 Text",
+              "id": 7,
+              "isDone": true,
+              "name": "Task 7",
+            },
+          ],
+        }
+      }
+      transferTaskIn={false}
+    />
+  </ul>
+</div>
+`;

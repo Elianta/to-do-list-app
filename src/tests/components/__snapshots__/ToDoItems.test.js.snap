@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render ToDoItems correctly 1`] = `
+<div>
+  <ToDoItem
+    categoryID={12}
+    id={4}
+    isDone={false}
+    key="Task 1"
+    toDoItemText="Task 1"
+  />
+  <ToDoItem
+    categoryID={12}
+    id={5}
+    isDone={true}
+    key="Task 2"
+    toDoItemText="Task 2"
+  />
+  <ToDoItem
+    categoryID={12}
+    id={6}
+    isDone={true}
+    key="Task 3"
+    toDoItemText="Task 3"
+  />
+</div>
+`;
